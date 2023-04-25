@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h1>Supplies</h1>
+      {% set receiving_supply_ids = [] %}
+      {% for item in receiving %}
+        {% if item.status == 'done' %}
+          {% set _ = receiving_supply_ids.append(item.supply_id) %}
+        {% endif %}
+      {% endfor %}
+      <div class="card mb-4">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Supply ID</th>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Supplier</th>
+                <th scope="col">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for spl in supply %}
+                {% set received = false %}
+                {% for item in dispatch %}
+                  {% if item.supply_id == spl.supply_id and item.status != 'Supply Inventory' %}
+                    {% set received = true %}
+                  {% endif %}
+                {% endfor %}
+                {% if not received %}
+                  <tr>
+                    <td>{{ spl.supply_id }}</td>
+                    <td>{{ spl.product_name }}</td>
+                    <td>{{ spl.quantity }}</td>
+                    <td>{{ spl.supplier_email }}</td>
+                    <td>{{ spl.date }}</td>
+                  </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h1>Receiving</h1>
+      <a href="{{ url_for('add_receiving') }}" class="btn btn-success">Add New Receiving</a>
+      <br><br>
+      <div class="card mb-4">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Action</th>
+                <th scope="col">Receiving ID</th>
+                <th scope="col">Employees Name</th>
+                <th scope="col">Supply ID</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in receiving %}
+                <tr>
+                  <td>
+                    <a href="{{ url_for('edit_receiving', id=item.receiving_id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ url_for('delete_receiving', id=item.receiving_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                  </td>
+                  <td>{{ item.receiving_id }}</td>
+                  <td>{{ item.employees.name }}</td>
+                  <td>{{ item.supply_id }}</td>
+                  <td>{{ item.date }}</td>
+                  <td>{{ item.status }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+        <h1>Edit Receiving</h1>
+        <div class="card mb-4">
+          <div class="card-body">
+            <form method="POST" action="{{ url_for('edit_receiving', id=receiving.receiving_id) }}">
+              <div class="form-group">
+                <label for="employees_id">Employees</label>
+                <select class="form-control" id="employees_id" name="employees_id" required>
+                  {% for employees in employees %}
+                    {% if employees.employees_id == receiving.employees_id %}
+                      <option value="{{ employees.employees_id }}" selected>{{ employees.name }}</option>
+                    {% else %}
+                      <option value="{{ employees.employees_id }}">{{ employees.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom: 10px;">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status" required>
+                  <option value="Supply Pending" {% if receiving.status == 'Supply Pending' %}selected{% endif %}>Supply Pending</option>
+                  <option value="Supply Accepted" {% if receiving.status == 'Supply Accepted' %}selected{% endif %}>Supply Accepted</option>
+                  <option value="Supply Inventory" {% if receiving.status == 'Supply Inventory' %}selected{% endif %}>Supply Inventory</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Update Receiving</button>
+              <a href="{{ url_for('receiving') }}" class="btn btn-secondary">Back</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+    <h1>Orders</h1>
+    {% set dispatched_order_ids = [] %}
+    {% for item in dispatch %}
+      {% if item.status == 'sent' %}
+        {% set _ = dispatched_order_ids.append(item.order_id) %}
+      {% endif %}
+    {% endfor %}
+    <div class="card mb-4">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Product</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ord in order %}
+              {% set dispatched = false %}
+              {% for item in dispatch %}
+                {% if item.order_id == ord.order_id and item.status != 'Order Sent' %}
+                  {% set dispatched = true %}
+                {% endif %}
+              {% endfor %}
+              {% if not dispatched %}
+                <tr>
+                  <td>{{ ord.order_id }}</td>
+                  <td>{{ ord.product_name }}</td>
+                  <td>{{ ord.quantity }}</td>
+                  <td>{{ ord.customer_email }}</td>
+                  <td>{{ ord.date }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <h1>Dispatches</h1>
+    <a href="{{ url_for('add_dispatch') }}" class="btn btn-success">Add New Dispatch</a>
+    <br><br>
+    <div class="card mb-4">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Actions</th>
+              <th scope="col">Dispatch_id</th>
+              <th scope="col">Employees Name</th>
+              <th scope="col">Order ID</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in dispatch %}
+              <tr>
+                <td>
+                  <a href="{{ url_for('edit_dispatch', id=item.dispatch_id) }}" class="btn btn-primary btn-sm">Edit</a>
+                  <a href="{{ url_for('delete_dispatch', id=item.dispatch_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+                <td>{{ item.dispatch_id }}</td>
+                <td>{{ item.employees.name }}</td>
+                <td>{{ item.order_id }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.status }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>  
+  </div>
+</div>
+{% endblock %}

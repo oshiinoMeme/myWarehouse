@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h1>Edit Dispatch</h1>
+      <div class="card mb-4">
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('edit_dispatch', id=dispatch.dispatch_id) }}">
+            <div class="form-group">
+              <label for="employees_id">Employees</label>
+              <select class="form-control" id="employees_id" name="employees_id" required>
+                {% for employees in employees %}
+                {% if employees.employees_id == dispatch.employees_id %}
+                <option value="{{ employees.employees_id }}" selected>{{ employees.name }}</option>
+                {% else %}
+                <option value="{{ employees.employees_id }}">{{ employees.name }}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 10px;">
+              <label for="status">Status</label>
+              <select class="form-control" id="status" name="status" required>
+                <option value="Order Processin" {% if dispatch.status == 'Order Processin' %}selected{% endif %}>Order Processin</option>
+                <option value="Order Assembly" {% if dispatch.status == 'Order Assembly' %}selected{% endif %}>Order Assembly</option>
+                <option value="Order Sent" {% if dispatch.status == 'Order Sent' %}selected{% endif %}>Order Sent</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Dispatch</button>
+            <a href="{{ url_for('dispatch') }}" class="btn btn-secondary">Back</a>
+          </form>
+        </div>
+      </div>      
+    </div>
+  </div>
+  </div>
+{% endblock %}

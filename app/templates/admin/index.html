@@ -1,0 +1,21 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+{{ super() }}
+<div>
+    <li >
+        <a href="{{ url_for('receiving') }}" class="btn btn-secondary">Back to Receiving</a>
+    </li>
+</div>
+<div>
+    <li>
+        <a href="{{ url_for('inventory') }}" class="btn btn-secondary">Back to Inventory</a>
+    </li>
+</div>
+<div>
+    <li>
+        <a href="{{ url_for('dispatch') }}" class="btn btn-secondary">Back to Dispatch</a>
+    </li>
+</div>
+
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h1>Inventory</h1>
+      <div class="card mb-4">
+        <div class="card-body">
+          <a href="{{ url_for('add_inventory') }}" class="btn btn-success">Add New Item</a>
+          <br><br>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Actions</th>
+                <th scope="col">Inventory_id</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Storage Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in inventory %}
+              <tr>
+                  <td>
+                    <a href="{{ url_for('edit_inventory', id=item.inventory_id) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{{ url_for('delete_inventory', id=item.inventory_id) }}" class="btn btn-danger btn-sm">Delete</a>
+                  </td>
+                  <td>{{ item.inventory_id }}</td>
+                  <td>{{ item.product.product_name }}</td>
+                  <td>{{ item.quantity }}</td>
+                  <td>{{ item.storage_location.section, item.storage_location.level, item.storage_location.shelf}}</td>
+
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>    
+</div>
+{% endblock %}

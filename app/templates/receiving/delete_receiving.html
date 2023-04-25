@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h1>Delete Receiving</h1>
+      <div class="card mb-4">
+        <div class="card-body">
+      
+          <p>Are you sure you want to delete Receiving {{ receiving.receiving_id }}?</p>
+          <form method="post" style="margin-bottom: 10px;">
+            <input type="submit" class="btn btn-danger" value="Delete">
+            <a href="{{ url_for('receiving') }}" class="btn btn-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      const confirmed = confirm('Are you sure you want to delete Receiving {{ receiving.receiving_id }}?');
+      if (!confirmed) {
+        event.preventDefault();
+      }
+    });
+  </script>
+{% endblock %}

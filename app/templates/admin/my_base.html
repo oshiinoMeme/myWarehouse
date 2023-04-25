@@ -1,0 +1,45 @@
+{% extends 'admin/base.html' %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="{{ get_url('.index_view') }}">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="Logo">
+        My App Name
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            {% for view in admin_views %}
+                {% if view.show_in_menu() %}
+                    <li class="nav-item{% if view.is_active() %} active{% endif %}">
+                        <a class="nav-link" href="{{ get_url(view.endpoint) }}">
+                            {% if view.get_menu_icon_type() == 'fa' %}
+                                <i class="fa {{ view.get_menu_icon_value() }}"></i>
+                            {% elif view.get_menu_icon_type() == 'glyphicon' %}
+                                <span class="glyphicon {{ view.get_menu_icon_value() }}"></span>
+                            {% else %}
+                                {{ view.get_menu_icon_value() }}
+                            {% endif %}
+                            {{ view.get_menu_label() }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        {% if current_user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ current_user.email }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
+</nav>
+{% endblock %}
